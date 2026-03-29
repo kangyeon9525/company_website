@@ -1,13 +1,19 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRoutes from "./routes/user.js";
 
 dotenv.config();
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+app.use(express.urlencoded());
+
+app.use("/api/auth", userRoutes);
+
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello world");
 });
 
 mongoose
