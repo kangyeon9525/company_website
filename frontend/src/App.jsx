@@ -9,6 +9,8 @@ import Board from "./Pages/Board/Board";
 import Services from "./Pages/Services/Services";
 import Contact from "./Pages/Contact/Contact";
 
+import AdminLogin from "./Pages/Admin/AdminLogin";
+
 function Layout() {
   return (
     <>
@@ -49,6 +51,10 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
     ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLogin />,
   },
 ]);
 
