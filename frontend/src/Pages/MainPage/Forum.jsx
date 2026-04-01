@@ -88,7 +88,7 @@ const Forum = () => {
       animate="visible"
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4 py-28 lg:py-0 max-w-6xl">
+      <div className="container mx-auto px-4 py-20 lg:py-24 max-w-6xl">
         <div className="text-center mb-6">
           <Motion.h2
             className="text-4xl lg:text-5xl font-bold text-gray-900"

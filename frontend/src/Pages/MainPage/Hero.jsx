@@ -51,8 +51,8 @@ const Hero = () => {
   ];
 
   return (
-    <div className="relative min-h-[110vh] bg-gradient-to-b from-gray-50 to-white pb-0">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-36">
+    <div className="relative bg-gradient-to-b from-gray-50 to-white pb-12 lg:pb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12 lg:pt-36 lg:pb-16">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="flex-1 text-center lg:text-left">
             <Motion.h1

@@ -45,7 +45,7 @@ const Contact = () => {
 
   return (
     <Motion.div
-      className="bg-white py-20 lg:py-40"
+      className="bg-white py-20 lg:py-32"
       initial="hidden"
       animate="visible"
     >
