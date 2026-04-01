@@ -1,7 +1,14 @@
-import "./App.css";
+import { useEffect, useState } from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
+import axios from "axios";
 import Footer from "./Components/Footer/Footer";
 import Navbar from "./Components/Navbar/Navbar";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+
 import MainPage from "./Pages/MainPage/MainPage";
 import About from "./Pages/About/About";
 import Leadership from "./Pages/Leadership/Leadership";
@@ -19,6 +26,34 @@ function Layout() {
       <Footer />
     </>
   );
+}
+
+function AuthRedirectRoute() {
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/verify-token",
+          {},
+          { withCredentials: true },
+        );
+        console.log(response);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.log("토큰 인증 실패: ", error);
+        setIsAuthenticated(false);
+      }
+    };
+    verifyToken();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return null;
+  }
+
+  return isAuthenticated ? <Navigate to="/admin/posts" replace /> : <Outlet />;
 }
 
 const router = createBrowserRouter([
@@ -54,7 +89,8 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLogin />,
+    element: <AuthRedirectRoute />,
+    children: [{ index: true, element: <AdminLogin /> }],
   },
 ]);
 
