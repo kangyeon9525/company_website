@@ -6,8 +6,10 @@ import {
   Navigate,
 } from "react-router-dom";
 import axios from "axios";
+
 import Footer from "./Components/Footer/Footer";
 import Navbar from "./Components/Navbar/Navbar";
+import AdminNavbar from "./Components/AdminNavbar/AdminNavbar";
 
 import MainPage from "./Pages/MainPage/MainPage";
 import About from "./Pages/About/About";
@@ -17,6 +19,10 @@ import Services from "./Pages/Services/Services";
 import Contact from "./Pages/Contact/Contact";
 
 import AdminLogin from "./Pages/Admin/AdminLogin";
+import AdminPosts from "./Pages/Admin/AdminPosts";
+import AdminEditPost from "./Pages/Admin/AdminEditPost";
+import AdminCreatePost from "./Pages/Admin/AdminCreatePost";
+import AdminContacts from "./Pages/Admin/AdminContacts";
 
 function Layout() {
   return (
@@ -24,6 +30,15 @@ function Layout() {
       <Navbar />
       <Outlet />
       <Footer />
+    </>
+  );
+}
+
+function AdminLayout() {
+  return (
+    <>
+      <AdminNavbar />
+      <Outlet />
     </>
   );
 }
@@ -91,6 +106,28 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <AuthRedirectRoute />,
     children: [{ index: true, element: <AdminLogin /> }],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "posts",
+        element: <AdminPosts />,
+      },
+      {
+        path: "create-post",
+        element: <AdminCreatePost />,
+      },
+      {
+        path: "edit-post/:id",
+        element: <AdminEditPost />,
+      },
+      {
+        path: "contacts",
+        element: <AdminContacts />,
+      },
+    ],
   },
 ]);
 
