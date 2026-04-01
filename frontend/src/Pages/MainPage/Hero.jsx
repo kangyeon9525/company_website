@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeroImage from "../../assets/Image1.webp";
 import { motion as Motion } from "framer-motion";
+import transitions from "../../Locale/Hero.json";
 
 const Hero = () => {
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "ko",
+  );
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem("language") || "ko");
+    };
+
+    window.addEventListener("languageChange", handleLanguageChange);
+    return () => {
+      window.removeEventListener("languageChange", handleLanguageChange);
+    };
+  }, []);
+
   const textVariant = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.3 } },
@@ -27,6 +43,13 @@ const Hero = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 1 } },
   };
 
+  const stats = [
+    { key: "installations" },
+    { key: "satisfaction" },
+    { key: "experience" },
+    { key: "support" },
+  ];
+
   return (
     <div className="relative min-h-[110vh] bg-gradient-to-b from-gray-50 to-white pb-0">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-36">
@@ -38,14 +61,14 @@ const Hero = () => {
               animate="visible"
               variants={textVariant}
             >
-              태양광 설비 전문가와 함께
+              {transitions[language].title.main}
               <Motion.span
                 className="block text-blue-600 mt-2 lg:mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                미래를 만들어갑니다.
+                {transitions[language].title.highlight}
               </Motion.span>
             </Motion.h1>
             <Motion.p
@@ -54,8 +77,7 @@ const Hero = () => {
               animate="visible"
               variants={textVariant}
             >
-              안전하고 효율적인 태양광 설비 설치부터 유지보수까지, 전문가들이
-              함께합니다.
+              {transitions[language].description}
             </Motion.p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Motion.button
@@ -64,7 +86,7 @@ const Hero = () => {
                 animate="visible"
                 variants={buttonVariant}
               >
-                상담 신청하기
+                {transitions[language].buttons.consult}
               </Motion.button>
               <Motion.button
                 className="px-8 py-4 bg-white text-blue-600 rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors duration-300 text-lg font-semibold"
@@ -72,7 +94,7 @@ const Hero = () => {
                 animate="visible"
                 variants={buttonVariant}
               >
-                더 알아보기
+                {transitions[language].buttons.learnMore}
               </Motion.button>
             </div>
           </div>
@@ -85,6 +107,7 @@ const Hero = () => {
             <div className="relative">
               <img
                 src={HeroImage}
+                alt={transitions[language].title.main}
                 className="relative rounded-2xl shadow-2xl w-full object-cover transform hover:scale-[1.02] transition-transform duration-300"
               />
             </div>
@@ -93,12 +116,7 @@ const Hero = () => {
       </div>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-          {[
-            { number: "1,200+", label: "설치 완료" },
-            { number: "98%", label: "고객 만족도" },
-            { number: "15년+", label: "업계 경력" },
-            { number: "24/7", label: "기술 지원" },
-          ].map((stat, index) => (
+          {stats.map((stat, index) => (
             <Motion.div
               key={index}
               className="text-center"
@@ -107,9 +125,11 @@ const Hero = () => {
               variants={statusVariant}
             >
               <div className="text-3xl font-bold text-blue-600">
-                {stat.number}
+                {transitions[language].stats[stat.key].number}
               </div>
-              <div className="text-gray-900">{stat.label}</div>
+              <div className="text-gray-900">
+                {transitions[language].stats[stat.key].label}
+              </div>
             </Motion.div>
           ))}
         </div>

@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion as Motion } from "framer-motion";
+import transitions from "../../Locale/Forum.json";
 
 const Forum = () => {
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "ko",
+  );
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem("language") || "ko");
+    };
+
+    window.addEventListener("languageChange", handleLanguageChange);
+    return () => {
+      window.removeEventListener("languageChange", handleLanguageChange);
+    };
+  }, []);
+
   const dummyPosts = [
     {
       _id: 1,
@@ -78,7 +94,7 @@ const Forum = () => {
             className="text-4xl lg:text-5xl font-bold text-gray-900"
             variants={itemVariants}
           >
-            업무 게시판
+            {transitions[language].forum.title}
           </Motion.h2>
         </div>
         <Motion.div className="flex justify-end mb-4" variants={itemVariants}>
@@ -87,7 +103,7 @@ const Forum = () => {
             className="px-5 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 border border-gray-200"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            전체보기
+            {transitions[language].forum.viewAll}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -115,7 +131,7 @@ const Forum = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              최근 게시물이 없습니다.
+              {transitions[language].forum.noRecentPosts}
             </Motion.div>
           ) : (
             dummyPosts.map((post) => (
@@ -128,14 +144,17 @@ const Forum = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-4 mb-2">
                       <span className="text-gray-500 text-sm">
-                        No. {post.number}
+                        {transitions[language].forum.postInfo.number}{" "}
+                        {post.number}
                       </span>
                       <span className="text-gray-500 text-sm">
-                        조회수: {post.views}
+                        {transitions[language].forum.postInfo.views}:{" "}
+                        {post.views}
                       </span>
                       {post.fileUrl.length > 0 && (
                         <span className="text-gray-500 text-sm">
-                          파일: {post.fileUrl.length}
+                          {transitions[language].forum.postInfo.files}:{" "}
+                          {post.fileUrl.length}
                         </span>
                       )}
                     </div>

@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion as Motion } from "framer-motion";
+import transitions from "../../Locale/Contact-Components.json";
 
 const Contact = () => {
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "ko",
+  );
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem("language") || "ko");
+    };
+
+    window.addEventListener("languageChange", handleLanguageChange);
+    return () => {
+      window.removeEventListener("languageChange", handleLanguageChange);
+    };
+  }, []);
+
   const gridVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: (i) => ({
@@ -39,43 +55,29 @@ const Contact = () => {
             className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4"
             variants={titleVariant}
           >
-            문의하기
+            {transitions[language].contact.title}
           </Motion.h2>
           <Motion.p className="text-gray-600 text-lg" variants={titleVariant}>
-            궁금하신 점이 있으신가요? 언제든 문의해주세요.
+            {transitions[language].contact.subtitle}
           </Motion.p>
         </Motion.div>
         <div className="grid md:grid-cols-3 gap-6 mb-20">
-          {[
-            {
-              title: "전화 문의",
-              info: "02-1234-5678",
-              subInfo: "평일 09:00 - 18:00",
-            },
-            {
-              title: "이메일 문의",
-              info: "support@example.com",
-              subInfo: "24시간 접수 가능",
-            },
-            {
-              title: "위치",
-              info: "서울특별시 강남구",
-              subInfo: "삼성동 123번지",
-            },
-          ].map((item, index) => (
-            <Motion.div
-              key={index}
-              className="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow duration-300 text-center"
-              custom={index}
-              initial="hidden"
-              animate="visible"
-              variants={gridVariants}
-            >
-              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-              <p className="text-gray-600">{item.info}</p>
-              <p className="text-gray-500 text-sm">{item.subInfo}</p>
-            </Motion.div>
-          ))}
+          {Object.values(transitions[language].contact.contactMethods).map(
+            (item, index) => (
+              <Motion.div
+                key={index}
+                className="bg-white p-6 rounded-xl shadow hover:shadow-md transition-shadow duration-300 text-center"
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                variants={gridVariants}
+              >
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.info}</p>
+                <p className="text-gray-500 text-sm">{item.subInfo}</p>
+              </Motion.div>
+            ),
+          )}
         </div>
         <Motion.div
           className="mb-12 max-w-4xl mx-auto"
@@ -105,7 +107,7 @@ const Contact = () => {
             to="/contact"
             className="inline-block px-10 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition-all duration-300 ease-in-out hover:shadow-lg"
           >
-            문의하기
+            {transitions[language].contact.button}
           </Link>
         </Motion.div>
       </div>

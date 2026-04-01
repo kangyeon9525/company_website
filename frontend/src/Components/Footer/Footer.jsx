@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import transitions from "../../Locale/Footer.json";
 
 const Footer = () => {
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "ko",
+  );
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem("language") || "ko");
+    };
+
+    window.addEventListener("languageChange", handleLanguageChange);
+    return () => {
+      window.removeEventListener("languageChange", handleLanguageChange);
+    };
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -15,14 +31,18 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">회사 소개</h3>
+            <h3 className="text-xl font-bold mb-4">
+              {transitions[language].footer.company.title}
+            </h3>
             <p className="text-gray-400">
-              저희는 최고의 서비스를 제공하기 위해 노력하고 있습니다.
+              {transitions[language].footer.company.description}
             </p>
           </div>
 
           <div>
-            <h3 className="text-xl font-bold mb-4">빠른 링크</h3>
+            <h3 className="text-xl font-bold mb-4">
+              {transitions[language].footer.quickLinks.title}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -30,7 +50,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="hover:text-white transition-colors"
                 >
-                  홈
+                  {transitions[language].footer.quickLinks.home}
                 </Link>
               </li>
               <li>
@@ -39,7 +59,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="hover:text-white transition-colors"
                 >
-                  회사 정보
+                  {transitions[language].footer.quickLinks.about}
                 </Link>
               </li>
               <li>
@@ -48,7 +68,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="hover:text-white transition-colors"
                 >
-                  임원 소개
+                  {transitions[language].footer.quickLinks.leadership}
                 </Link>
               </li>
               <li>
@@ -57,7 +77,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="hover:text-white transition-colors"
                 >
-                  업무 게시판
+                  {transitions[language].footer.quickLinks.board}
                 </Link>
               </li>
               <li>
@@ -66,7 +86,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="hover:text-white transition-colors"
                 >
-                  제공 기술
+                  {transitions[language].footer.quickLinks.services}
                 </Link>
               </li>
               <li>
@@ -75,7 +95,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="hover:text-white transition-colors"
                 >
-                  문의
+                  {transitions[language].footer.quickLinks.contact}
                 </Link>
               </li>
             </ul>
@@ -83,14 +103,16 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">연락처</h3>
             <ul className="space-y-2 text-gray-400">
-              <li>서울특별시 강남구</li>
-              <li>삼성동 123번지</li>
-              <li>전화: 02-1234-5678</li>
-              <li>이메일: info@example.com</li>
+              <li>{transitions[language].footer.contact.address1}</li>
+              <li>{transitions[language].footer.contact.address}</li>
+              <li>{transitions[language].footer.contact.phone}</li>
+              <li>{transitions[language].footer.contact.email}</li>
             </ul>
           </div>
           <div>
-            <h3 className="text-xl font-bold mb-4">소셜 미디어</h3>
+            <h3 className="text-xl font-bold mb-4">
+              {transitions[language].footer.social.title}
+            </h3>
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -120,7 +142,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2026 ABC Company. All rights reserved.</p>
+          <p>{transitions[language].footer.copyright}</p>
         </div>
       </div>
     </footer>
